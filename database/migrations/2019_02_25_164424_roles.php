@@ -13,7 +13,7 @@ class Roles extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('tbl_roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique()->comment('Tên vai trò');
             $table->string('display_name')->nullable();

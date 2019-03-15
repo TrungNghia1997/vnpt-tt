@@ -9,6 +9,10 @@ use App\Models\RolePermission;
 
 class PermissionController extends Controller
 {
+    public function __construct() {
+      $this->middleware('auth');
+      $this->middleware('permission:view_permission');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +34,7 @@ class PermissionController extends Controller
         $data = $request->all();
 
         $rules = [
-            'name' => 'required|unique:permissions',
+            'name' => 'required|unique:tbl_permissions',
         ];
 
         $messages = [

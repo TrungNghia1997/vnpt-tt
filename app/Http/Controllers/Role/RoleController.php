@@ -11,6 +11,11 @@ use App\Models\RoleUser;
 
 class RoleController extends Controller
 {
+    public function __construct() {
+      $this->middleware('auth');
+      $this->middleware('permission:view_role');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +47,7 @@ class RoleController extends Controller
         $data = $request->all();
 
         $rules = [
-            'name' => 'required|unique:roles',
+            'name' => 'required|unique:tbl_roles',
         ];
 
         $messages = [

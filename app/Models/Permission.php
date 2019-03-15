@@ -12,7 +12,7 @@ class Permission extends EntrustPermission
 
     protected $dates = ['deleted_at'];
 
-    protected $table = 'permissions';
+    protected $table = 'tbl_permissions';
 
     protected $fillable = [
     	'id', 'name', 'display_name', 'description', 'created_at', 'updated_at', 'deleted_at',

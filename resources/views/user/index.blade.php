@@ -164,12 +164,12 @@
               <span class="input-group-btn">
                 <!-- image-preview-clear button -->
                 <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
-                  <span class="glyphicon glyphicon-remove"></span> Clear
+                  <span class="glyphicon glyphicon-remove"></span> Xóa
                 </button>
                 <!-- image-preview-input -->
                 <div class="btn btn-default image-preview-input">
                   <span class="glyphicon glyphicon-folder-open"></span>
-                  <span class="image-preview-input-title">Browse</span>
+                  <span class="image-preview-input-title">Chọn ảnh</span>
                   <input type="file" accept="image/png, image/jpeg, image/gif" id="avatar" name="input-file-preview"/> <!-- rename it -->
                 </div>
               </span>
@@ -461,7 +461,7 @@
               width:250,
               height:200
             });
-            $(".image-preview-input-title").text("Change");
+            $(".image-preview-input-title").text("Thay đổi");
             $(".image-preview-clear").show();
             $(".image-preview-filename").val(res.user.avatar);            
             img.attr('src', '{{ asset('images') }}/'+res.user.avatar);
@@ -568,7 +568,7 @@
     $('.image-preview-filename').val("");
     $('.image-preview-clear').hide();
     $('.image-preview-input input:file').val("");
-    $(".image-preview-input-title").text("Browse");    
+    $(".image-preview-input-title").text("Chọn ảnh");    
   };
 
   $(function() {
@@ -603,7 +603,7 @@
       var reader = new FileReader();
         // Set preview image into the popover data-content
         reader.onload = function (e) {
-          $(".image-preview-input-title").text("Change");
+          $(".image-preview-input-title").text("Thay đổi");
           $(".image-preview-clear").show();
           $(".image-preview-filename").val(file.name);            
           img.attr('src', e.target.result);

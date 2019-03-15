@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('/vendor/datatables/css/datatable.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/vendor/toastr/css/toastr.css') }}">
-<link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
+    <link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
     <title>VNPT thực tập</title>
     
     @yield('header')
@@ -24,7 +24,7 @@
     <div class="dashboard-main-wrapper">
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="index.html" style="text-transform:none;">
+                <a class="navbar-brand" href="{{ route('home') }}" style="text-transform:none;">
                     <img src="{{ asset('images/logo.jpg') }}" width="50px" alt=""> VNPT Hải Dương
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,17 +39,24 @@
                         </li>
                         <li class="nav-item dropdown nav-user">
                             @if(!empty(Auth::user()))
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/images/avatar-1.jpg') }}" alt="" class="user-avatar-md rounded-circle"> {{Auth::name()}}</a>
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ asset('/images/'.Auth::user()->avatar) }}" alt="" class="user-avatar-md rounded-circle"> {{Auth::user()->name}}
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <h5 class="mb-0 text-white nav-user-name">{{Auth::name()}}</h5>
-                                    <span class="status"></span><span class="ml-2">{{Auth::job()}}</span>
+                                    <h5 class="mb-0 text-white nav-user-name">{{Auth::user()->name}}</h5>
+                                    <span class="status"></span><span class="ml-2">{{Auth::user()->job}}</span>
                                 </div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Tài khoản</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Đăng xuất</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                                <i class="fas fa-power-off mr-2"></i>Đăng xuất</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                </form>
                             </div>
                             @else
-                            <a href="" class="nav-link login" data-toggle="modal" data-target="#modalLogin"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                            <a href="{{ route('login') }}" class="nav-link login" ><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
                             @endif
                         </li>
                     </ul>
@@ -62,11 +69,12 @@
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <div id="repon-size">
                         @if(!empty(Auth::user()))
-                        <img src="{{ asset('/images/avatar-1.jpg') }}" alt="" class="user-avatar-md rounded-circle">
-                        <a class="nav-link nav-user-img" href="#"> {{Auth::name()}}</a>
-                        <a class="nav-link" href="#" style="border-left: 1px solid gray">Đăng xuất</a>
+                        <img src="{{ asset('/images/'.Auth::user()->avatar) }}" alt="" class="user-avatar-md rounded-circle">
+                        <a class="nav-link nav-user-img" href="#"> {{Auth::user()->name}}</a>
+                        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();" style="border-left: 1px solid gray">Đăng xuất</a>
                         @else
-                        <a href="" class="nav-link login" data-toggle="modal" data-target="#modalLogin"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                        <a href="{{ route('login') }}" class="nav-link login" ><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
                         @endif
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,36 +82,53 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav flex-column">
+                            <a href="{{ route('home') }}" title="">
                             <li class="nav-divider">
-                                Menu
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link active" href="#"><i class="fas fa-newspaper"></i>Tin tức</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('contactUser.index') }}"><i class="fas fa-address-book"></i>Danh bạ nội bộ</a>
-                            </li>
+                                Trang chủ
+                            </li></a>
+
+                            @if(Entrust::can(['view_user']) || Entrust::can(['view_post']) || Entrust::can(['view_category']) || Entrust::can(['view_department']) || Entrust::can(['view_role']) || Entrust::can(['view_permission']))
                             <li class="nav-divider">
                                 Quản trị
                             </li>
-                            <li class="nav-item ">
+
+                            @if(Entrust::can(['view_user']))
+                            <li class="nav-item active">
                                 <a class="nav-link" href="{{ route('user.index') }}"><i class="fa fa-fw fa-user-circle"></i>Quản lý nhân viên</a>
                             </li>
+                            @endif
+
+                            @if(Entrust::can(['view_post']))
                             <li class="nav-item ">
                                 <a class="nav-link" href="{{ route('post.index') }}"><i class="fas fa-book"></i>Quản lý bài viết</a>
                             </li>
+                            @endif
+                            
+                            @if(Entrust::can(['view_category']))
                             <li class="nav-item ">
                                 <a class="nav-link" href="{{ route('category.index') }}"><i class="fas fa-tags"></i>Quản lý chuyên mục</a>
                             </li>
+                            @endif
+
+                            @if(Entrust::can(['view_department']))
                             <li class="nav-item ">
                                 <a class="nav-link" href="{{ route('department.index') }}"><i class="fas fa-users"></i>Quản lý bộ phận</a>
                             </li>
+                            @endif
+
+                            @if(Entrust::can(['view_role']))
                             <li class="nav-item ">
                                 <a class="nav-link" href="{{ route('role.index') }}"><i class="fas fa-lock"></i>Quản lý vai trò</a>
                             </li>
+                            @endif
+
+                            @if(Entrust::can(['view_permission']))
                             <li class="nav-item ">
                                 <a class="nav-link" href="{{ route('permission.index') }}"><i class="fas fa-hand-paper"></i>Quản lý quyền hạn</a>
                             </li>
+                            @endif
+
+                            @endif
                         </ul>
                     </div>
                 </nav>
@@ -123,40 +148,6 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 center">
                             Copyright © 2019. Design by NghiaNT. All rights reserved
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal" id="modalLogin">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="card ">
-                    <div class="card-header text-center">
-                        <img src="{{ asset('images/logo_vnpt.png') }}" width="142px" alt="">
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
-                            <div class="form-group">
-                                <input class="form-control-lg form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" type="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
-                                @if ($errors->has('email'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control-lg form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" type="password" placeholder="Password" required>
-                                @if ($errors->has('password'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng nhập</button>
-                        </form>
                     </div>
                 </div>
             </div>

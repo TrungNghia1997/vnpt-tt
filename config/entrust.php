@@ -29,7 +29,7 @@ return [
     | This is the roles table used by Entrust to save roles to the database.
     |
     */
-    'roles_table' => 'roles',
+    'roles_table' => 'tbl_roles',
 
     /*
     |--------------------------------------------------------------------------
@@ -51,7 +51,7 @@ return [
     | database.
     |
     */
-    'permissions_table' => 'permissions',
+    'permissions_table' => 'tbl_permissions',
 
     /*
     |--------------------------------------------------------------------------

@@ -11,14 +11,14 @@ class Post extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $table = 'posts';
+    protected $table = 'tbl_posts';
 
     protected $fillable = [
-    	'id', 'post', 'content', 'user_id', 'category_id', 'status', 'file', 'created_at', 'updated_at', 'deleted_at',
+    	'id', 'post', 'content', 'user_id', 'category_id', 'status', 'files', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     public function user(){
-    	return $this->belongsTo('App\Models\User', 'id','user_id');
+    	return $this->belongsTo('App\Models\User', 'user_id','id');
     }
 
     public function category(){

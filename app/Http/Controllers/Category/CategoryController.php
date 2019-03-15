@@ -10,6 +10,11 @@ use DataTable;
 
 class CategoryController extends Controller
 {
+    public function __construct() {
+      $this->middleware('auth');
+      $this->middleware('permission:view_category')->only(['index','store', 'show', 'update', 'destroy', 'getListCategory']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -152,16 +157,13 @@ class CategoryController extends Controller
       ->addColumn('action', function($category){
         $string = '';
 
-                // if (Entrust::can(["category-edit"])) {
         $string = $string.'<a type="button" onclick="showEditCategory('.$category->id.')"  class="btn btn-xs btn-warning" data-tooltip="tooltip" title="Chỉnh sửa">
         <i class="fas fa-edit"></i> 
         </a>';
-                // }
-                // if (Entrust::can(["category-delete"])) {
+        
         $string = $string.'<a type="button" data-id="'.$category->id.'" class="btn btn-xs btn-danger btn-delete" data-tooltip="tooltip" title="Xóa">
         <i class="fas fa-trash-alt"></i>  
         </a>';
-                // }
 
         return $string;
       })

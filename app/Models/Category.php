@@ -11,7 +11,7 @@ class Category extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $table = 'categories';
+    protected $table = 'tbl_categories';
 
     protected $fillable = [
     	'id', 'category', 'created_at', 'updated_at', 'deleted_at',

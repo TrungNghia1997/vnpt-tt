@@ -13,7 +13,7 @@ class Categories extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('tbl_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('category')->comment('Tên chuyên mục');
             $table->timestamps();

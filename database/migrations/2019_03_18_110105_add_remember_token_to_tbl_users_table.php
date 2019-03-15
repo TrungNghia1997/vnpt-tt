@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnAddressToUsersTable extends Migration
+class AddRememberTokenToTblUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class AddColumnAddressToUsersTable extends Migration
     public function up()
     {
         Schema::table('tbl_users', function (Blueprint $table) {
-            if (!Schema::hasColumn('tbl_users', 'address')) {
-                $table->string('address')->comment('Địa chỉ nhân viên')->after('phone')->nullable();
+            if (!Schema::hasColumn('tbl_users', 'remember_token')) {
+                $table->string('remember_token')->nullable();
             }
         });
     }
@@ -27,8 +27,10 @@ class AddColumnAddressToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            
+        Schema::table('tbl_users', function (Blueprint $table) {
+            if (Schema::hasColumn('tbl_users', 'remember_token')) {
+                $table->dropColumn('remember_token');
+            }
         });
     }
 }

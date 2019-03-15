@@ -13,7 +13,7 @@ class Permissions extends Migration
      */
     public function up()
     {
-        Schema::create('permissions', function (Blueprint $table) {
+        Schema::create('tbl_permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique()->comment('Tên quyền hạn');
             $table->string('display_name')->nullable();

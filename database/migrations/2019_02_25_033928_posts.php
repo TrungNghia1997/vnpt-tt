@@ -13,7 +13,7 @@ class Posts extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('tbl_posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('post')->comment('Tên bài viết');
             $table->text('content')->comment('Nội dung bài viết');

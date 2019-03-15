@@ -18,14 +18,14 @@ class UserTableSeeder extends Seeder
         	'name' => 'Superadmin',
         	'email' => 'superadmin@gmail.com',
         	'phone' => '09999999',
-        	'password' => encrypt('123456'),
+        	'password' => Hash::make('123456'),
         ]);
 
         User::updateOrCreate([
         	'name' => 'Admin',
         	'email' => 'admin@gmail.com',
         	'phone' => '08888888',
-        	'password' => encrypt('123456'),
+        	'password' => Hash::make('123456'),
         ]);
     }
 }

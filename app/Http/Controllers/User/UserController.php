@@ -9,9 +9,17 @@ use App\Models\Department;
 use App\Models\Role;
 use App\Models\RoleUser;
 use Validator;
+use Entrust;
+use Hash;
 
 class UserController extends Controller
 {
+    public function __construct() {
+      $this->middleware('auth')->except(['contactUser', 'getListContactUser']);
+      $this->middleware('permission:view_user')->only(['index','store', 'show', 'update', 'destroy', 'getListUser']);
+      $this->middleware('permission:view_role')->only(['addDelRole']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +44,7 @@ class UserController extends Controller
 
         $rules = [
             'name' => 'required',
-            'email' => 'required|unique:users|email',
+            'email' => 'required|unique:tbl_users|email',
             'phone' => 'required',
         ];
         $messages = [
@@ -56,7 +64,7 @@ class UserController extends Controller
         }else{
             try {
 
-                $data['password'] = encrypt('123456');
+                $data['password'] = Hash::make('123456');
 
                 if(!empty($data['birthday'])){
                     $data['birthday'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['birthday'])));
@@ -158,8 +166,6 @@ class UserController extends Controller
         }else{
             try {
 
-                $data['password'] = encrypt('123456');
-
                 if(!empty($data['birthday'])){
                     $data['birthday'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['birthday'])));
                 }else{
@@ -260,24 +266,23 @@ class UserController extends Controller
         ->addColumn('action', function($user){
             $string = '';
 
+            if (Entrust::can(["view_role"])) {
             $string = $string.'<a type="button" onclick="showDetailRole('.$user->id.')"  class="btn btn-xs btn-primary" data-tooltip="tooltip" title="Vai trò">
             <i class="fas fa-lock"></i> 
             </a>';
-                // if (Entrust::can(["user-show"])) {
+            }
+            
             $string = $string.'<a type="button" onclick="showDetailUser('.$user->id.')"  class="btn btn-xs btn-info" data-tooltip="tooltip" title="Chi tiết">
             <i class="fas fas fa-eye"></i> 
             </a>';
-                // }
-                // if (Entrust::can(["user-edit"])) {
+            
             $string = $string.'<a type="button" onclick="showEditUser('.$user->id.')"  class="btn btn-xs btn-warning" data-tooltip="tooltip" title="Chỉnh sửa">
             <i class="fas fa-edit"></i> 
             </a>';
-                // }
-                // if (Entrust::can(["user-delete"])) {
+            
             $string = $string.'<a type="button" data-id="'.$user->id.'" class="btn btn-xs btn-danger btn-delete" data-tooltip="tooltip" title="Xóa">
             <i class="fas fa-trash-alt"></i>  
             </a>';
-                // }
 
             return $string;
         })
@@ -301,13 +306,11 @@ class UserController extends Controller
             $string = '';
             $check = RoleUser::where('user_id', $role->user_id)->where('role_id', $role->id)->first();
 
-            // if (Entrust::can(["user-edit"])) {
             if(empty($check)){
                 $string = $string.'<input type="checkbox" onclick="addRoleUser('.$role->user_id.', '.$role->id.', 0)" id="select'.$role->id.'" data-tooltip="tooltip" title="Chọn vai trò">';
             }else{
                 $string = $string.'<input type="checkbox" onclick="addRoleUser('.$role->user_id.', '.$role->id.', 1)" checked id="select'.$role->id.'" data-tooltip="tooltip" title="Bỏ vai trò">';
             }
-                // }
 
             return $string;
         })

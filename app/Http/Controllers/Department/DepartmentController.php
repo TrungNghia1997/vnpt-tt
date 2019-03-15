@@ -8,6 +8,11 @@ use App\Models\Department;
 
 class DepartmentController extends Controller
 {
+    public function __construct() {
+      $this->middleware('auth');
+      $this->middleware('permission:view_department');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -197,21 +202,17 @@ class DepartmentController extends Controller
         ->addColumn('action', function($department){
             $string = '';
 
-                // if (Entrust::can(["user-show"])) {
             $string = $string.'<a type="button" onclick="showDetailDepartmentGroup('.$department->id.')"  class="btn btn-xs btn-info" data-tooltip="tooltip" title="Chi tiết">
             <i class="fas fa-edit"></i> 
             </a>';
-                // }
-                // if (Entrust::can(["user-edit"])) {
+            
             $string = $string.'<a type="button" onclick="showEditDepartmentGroup('.$department->id.')"  class="btn btn-xs btn-warning" data-tooltip="tooltip" title="Chỉnh sửa">
             <i class="fas fa-edit"></i> 
             </a>';
-                // }
-                // if (Entrust::can(["user-delete"])) {
+
             $string = $string.'<a type="button" data-id="'.$department->id.'" class="btn btn-xs btn-danger btn-delete" data-tooltip="tooltip" title="Xóa">
             <i class="fas fa-trash-alt"></i>  
             </a>';
-                // }
 
             return $string;
         })
@@ -230,16 +231,13 @@ class DepartmentController extends Controller
         ->addColumn('action', function($department){
             $string = '';
 
-                // if (Entrust::can(["user-edit"])) {
             $string = $string.'<a type="button" onclick="showEditDepartment('.$department->id.')"  class="btn btn-xs btn-warning" data-tooltip="tooltip" title="Chỉnh sửa">
             <i class="fas fa-edit"></i> 
             </a>';
-                // }
-                // if (Entrust::can(["user-delete"])) {
+            
             $string = $string.'<a type="button" data-id="'.$department->id.'" class="btn btn-xs btn-danger btn-delete" data-tooltip="tooltip" title="Xóa">
             <i class="fas fa-trash-alt"></i>  
             </a>';
-                // }
 
             return $string;
         })

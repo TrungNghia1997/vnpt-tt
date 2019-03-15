@@ -13,7 +13,7 @@ class Departments extends Migration
      */
     public function up()
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('tbl_departments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('department')->comment('Tên bộ phận');
             $table->integer('parent_id')->comment('Id bộ phận cha')->nullable();
