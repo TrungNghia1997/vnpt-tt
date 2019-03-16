@@ -159,7 +159,7 @@ body {
     font-family: 'Circular Std Book';
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 16px;
     color: #71748d;
     background-color: #efeff6;
     -webkit-font-smoothing: antialiased;
@@ -7049,4 +7049,7 @@ button{
 table th{
   text-align: center;
   padding: 10px !important;
+}
+.dt-justify{
+  text-align: justify;
 }

@@ -1,0 +1,30 @@
+- Tìm kiếm trong 1 mảng đối tượng:
+$collection = collect(<tên mảng>);
+$filteredItems = $collection->where('<key>', <giá trị>);
+
+- thư viện fullcalendar: khi dùng sang font tiếng khác thì không viết hoa chữ cái đầu tháng. Cách fix thêm đoạn css :
+.fc-toolbar { text-transform: capitalize; }
+
+- Sử dụng $_SERVER[]
+http://phpcoban.com/bai-10-bien-_server-trong-php/
+
+- mở chỉnh sửa file trong git base
+	editor <file name>
+- mở chỉ xem 
+	vi <file name>
+	more <file name>
+	cat <file name>
+- chỉnh css background-color,... trong fullcalendar trong phần event data (web của nó)
+
+- hàm cho phép hiển thị \n trong php: nl2br()
+
+- Ẩn thông báo lỗi datatable (bên js): $.fn.dataTable.ext.errMode = 'none';
+
+- Lưu biến vào localStorage trong trình duyệt(không lưu được mảng): localStorage.setItem('user',1)
+- lấy biến trong localStorage trình duyệt: localStorage.getItem('user')
+
+- lấy dl input[file] bằng js: $('#avatar')[0].files[0];
+
+- thêm vào file php.ini để kết nối oracle trong laravel(bật tiện ích): 
+extension=php_oci8_12c.dll
+extension=php_odbc.dll

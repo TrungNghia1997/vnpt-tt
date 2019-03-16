@@ -11,6 +11,27 @@
     .tab-outline .tab-content{
         padding: 16px 10px;
     }
+    .card:hover{
+      background-color: #e6e6e6;
+    }
+    .card a:hover h3{
+      color: orange;
+    }
+    #search-group{
+      display: flex;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    #search-group form{
+      margin: auto;
+    }
+    #search-group .row{
+      float: left;
+      margin-right: 22px;
+    }
+    #search-group input, #search-group select{
+      width: 200px;
+    }
 </style>
 @endsection
 
@@ -28,12 +49,34 @@
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="outline-post">
-                    <div>
+
+                  {{-- form search --}}
+                    <div id="search-group">
+                      <form action="{{ route('home.search') }}" method="GET" accept-charset="utf-8">
+                        <div class="row">
+                          <input type="text" name="search_name" class="form-control-sm" id="search_name" placeholder="Tìm kiếm...">
+                        </div>
+                        <div  class="row">
+                          <select name="category_id"  class="form-control-sm" id="category_id">
+                            <option value="all">Tất cả</option>
+                            @foreach($categories as $key => $category)
+                            <option value="{{$category['id']}}">{{$category['category']}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="row">
+                          <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                        </div>
+                      </form>
+                    </div>
+                    
+                    {{-- Danh sách bài viết --}}
+                    <div id="post-group">
                         @if(!empty($posts))
                         @foreach($posts as $key => $post)
                         <div class="card">
                             <div class="card-body">
-                                <a href="" title="">
+                                <a href="{{ route('post.detail', $post->slug) }}" title="">
                                     <h3 style="margin-bottom: 0px;"> {{$post['post']}}</h3>
                                 </a>
                                 <p style="font-style: italic;"><span>{{date('d/m/Y', strtotime($post['created_at']))}}</span> - <span>{{$post['user_id']}}</span></p>

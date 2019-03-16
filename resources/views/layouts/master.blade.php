@@ -32,11 +32,6 @@
                 </button>
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-right-top">
-                        <li class="nav-item">
-                            <div id="custom-search" class="top-search-bar">
-                                <input class="form-control" type="text" placeholder="Search..">
-                            </div>
-                        </li>
                         <li class="nav-item dropdown nav-user">
                             @if(!empty(Auth::user()))
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,7 +78,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav flex-column">
                             <a href="{{ route('home') }}" title="">
-                            <li class="nav-divider">
+                            <li class="nav-divider nav-link {{ Request::is('/') ? 'active' : '' }}" style="line-height: 20px !important;">
                                 Trang chủ
                             </li></a>
 
@@ -93,38 +88,38 @@
                             </li>
 
                             @if(Entrust::can(['view_user']))
-                            <li class="nav-item active">
-                                <a class="nav-link" href="{{ route('user.index') }}"><i class="fa fa-fw fa-user-circle"></i>Quản lý nhân viên</a>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('user*') ? 'active' : '' }}" href="{{ route('user.index') }}"><i class="fa fa-fw fa-user-circle"></i>Quản lý nhân viên</a>
                             </li>
                             @endif
 
                             @if(Entrust::can(['view_post']))
                             <li class="nav-item ">
-                                <a class="nav-link" href="{{ route('post.index') }}"><i class="fas fa-book"></i>Quản lý bài viết</a>
+                                <a class="nav-link {{ Request::is('post*') ? 'active' : '' }}" href="{{ route('post.index') }}"><i class="fas fa-book"></i>Quản lý bài viết</a>
                             </li>
                             @endif
                             
                             @if(Entrust::can(['view_category']))
                             <li class="nav-item ">
-                                <a class="nav-link" href="{{ route('category.index') }}"><i class="fas fa-tags"></i>Quản lý chuyên mục</a>
+                                <a class="nav-link {{ Request::is('category*') ? 'active' : '' }}" href="{{ route('category.index') }}"><i class="fas fa-tags"></i>Quản lý chuyên mục</a>
                             </li>
                             @endif
 
                             @if(Entrust::can(['view_department']))
                             <li class="nav-item ">
-                                <a class="nav-link" href="{{ route('department.index') }}"><i class="fas fa-users"></i>Quản lý bộ phận</a>
+                                <a class="nav-link {{ Request::is('department*') ? 'active' : '' }}" href="{{ route('department.index') }}"><i class="fas fa-users"></i>Quản lý bộ phận</a>
                             </li>
                             @endif
 
                             @if(Entrust::can(['view_role']))
                             <li class="nav-item ">
-                                <a class="nav-link" href="{{ route('role.index') }}"><i class="fas fa-lock"></i>Quản lý vai trò</a>
+                                <a class="nav-link {{ Request::is('role*') ? 'active' : '' }}" href="{{ route('role.index') }}"><i class="fas fa-lock"></i>Quản lý vai trò</a>
                             </li>
                             @endif
 
                             @if(Entrust::can(['view_permission']))
                             <li class="nav-item ">
-                                <a class="nav-link" href="{{ route('permission.index') }}"><i class="fas fa-hand-paper"></i>Quản lý quyền hạn</a>
+                                <a class="nav-link {{ Request::is('permission*') ? 'active' : '' }}" href="{{ route('permission.index') }}"><i class="fas fa-hand-paper"></i>Quản lý quyền hạn</a>
                             </li>
                             @endif
 

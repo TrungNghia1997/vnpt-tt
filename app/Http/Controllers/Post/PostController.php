@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Category;
+use Auth;
 
 class PostController extends Controller
 {
     public function __construct() {
-      $this->middleware('auth');
+      $this->middleware('auth')->except(['postDetail']);
       $this->middleware('permission:view_post')->only(['index','store', 'show', 'update', 'destroy', 'getListPost']);
     }
 
@@ -65,6 +66,8 @@ class PostController extends Controller
             try {
                 // $data['user_id'] = Auth::id();
                 $data['user_id'] = 1;
+
+                $data['slug'] = $this->createSlug($data['post']);
                 
                 if(!empty($data['files'])){
                     $file_name = $request->file('files')->getClientOriginalName();
@@ -155,6 +158,7 @@ class PostController extends Controller
             ], 200);
         }else{
             try {
+                $data['slug'] = $this->createSlug($data['post']);
                 
                 if(!empty($data['files'])){
                     $file_name = $request->file('files')->getClientOriginalName();
@@ -208,7 +212,7 @@ class PostController extends Controller
     public function getListPost(){
       $posts = Post::join('tbl_categories', 'tbl_posts.category_id', '=', 'tbl_categories.id')
                     ->join('tbl_users', 'tbl_posts.user_id', '=', 'tbl_users.id')
-                    ->select('tbl_posts.id as post_id', 'tbl_posts.post', 'tbl_posts.content', 'tbl_posts.category_id', 'tbl_posts.user_id', 'tbl_posts.status', 'tbl_posts.created_at', 'tbl_categories.id', 'tbl_categories.category', 'tbl_users.id', 'tbl_users.name')
+                    ->select('tbl_posts.id as post_id', 'tbl_posts.post', 'tbl_posts.slug', 'tbl_posts.content', 'tbl_posts.category_id', 'tbl_posts.user_id', 'tbl_posts.status', 'tbl_posts.created_at', 'tbl_categories.id', 'tbl_categories.category', 'tbl_users.id', 'tbl_users.name')
                     ->whereNull('tbl_posts.deleted_at')
                     ->whereNull('tbl_categories.deleted_at')
                     ->whereNull('tbl_users.deleted_at')
@@ -216,9 +220,12 @@ class PostController extends Controller
 
       return datatables()->of($posts)
       ->addIndexColumn()
+      ->editColumn('post', function($post){
+        return '<a href="'.route('post.detail',$post->slug).'">'.$post->post.'</a>';
+      })
       ->editColumn('content', function($post){
         if(strlen($post->content) >= 180){
-          return substr($post->content, 0, 180).'... <a href="" style="color:#007bff;">Xem thêm</a>';
+          return substr($post->content, 0, 180).'... <a href="'.route('post.detail',$post->slug).'" style="color:#007bff;">Xem thêm</a>';
         }else{
           return $post->content;
         }
@@ -242,7 +249,74 @@ class PostController extends Controller
 
         return $string;
       })
-      ->rawColumns(['content', 'action'])
+      ->rawColumns(['post','content', 'action'])
       ->toJson();
     }
+
+    public function postDetail($slug){
+      $post = Post::where('slug', $slug)->first();
+
+      if($post->status == 1 && empty(Auth::user())){
+          return redirect()->route('login');
+      }
+
+      $post->user_id = $post->user->name;
+
+      return view('post.detail', ['post'=>$post]);
+    }
+
+    public function createSlug ($str){
+
+        $unicode = array(
+
+            'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+
+            'd'=>'đ',
+
+            'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
+
+            'i'=>'í|ì|ỉ|ĩ|ị',
+
+            'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
+
+            'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
+
+            'y'=>'ý|ỳ|ỷ|ỹ|ỵ',
+
+            'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+
+            'D'=>'Đ',
+
+            'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+
+            'I'=>'Í|Ì|Ỉ|Ĩ|Ị',
+
+            'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+
+            'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+
+            'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+
+        );
+
+        foreach($unicode as $nonUnicode=>$uni){
+
+            $str = preg_replace("/($uni)/i", $nonUnicode, $str);
+
+        }
+        $str = str_replace(' ','-',$str);
+        $str = strtolower($str);
+        $str = $str.'-'.rand(10000,99999);
+
+        return $str;
+
+    }
+
+    public function fileDownload($file_name)
+    {
+        $file_path = public_path('files/'.$file_name);
+
+        return response()->download($file_path);
+    }
+
 }

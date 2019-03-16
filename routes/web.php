@@ -14,6 +14,7 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('search', 'HomeController@search')->name('home.search');
 
 //Quản lý nhân viên
 Route::get('user', 'User\UserController@index')->name('user.index');
@@ -67,7 +68,8 @@ Route::post('insert-post', 'Post\PostController@store')->name('post.insert');
 Route::delete('post/{id}', 'Post\PostController@destroy')->name('post.delete');
 Route::get('post/{id}', 'Post\PostController@show')->name('post.show');
 Route::post('post/{id}', 'Post\PostController@update')->name('post.update');
-Route::get('post/{post}', 'Post\PostController@postDetail')->name('post.detail');
+Route::get('tin-tuc/{post}', 'Post\PostController@postDetail')->name('post.detail');
+Route::get('download/{file}', 'Post\PostController@fileDownload')->name('file.download');
 
 //Danh bạ nội bộ
 Route::get('contact-user', 'User\UserController@contactUser')->name('contactUser.index');

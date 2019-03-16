@@ -27,10 +27,6 @@
   background: white;
 }
 
-.dt-justify{
-  text-align: justify;
-}
-
 </style>
 @endsection
 
@@ -68,7 +64,7 @@
                <th class="stl-column color-column">Tên bài viết</th>
                <th class="stl-column color-column">Người đăng</th>
                <th class="stl-column color-column">Chuyên mục</th>
-               <th class="stl-column color-column">Nội dung</th>
+               <th class="stl-column color-column" style="text-align: center;">Nội dung</th>
                <th class="stl-column color-column">Ngày tạo</th>
                <th class="stl-column color-column">Hành động</th>
              </tr>
@@ -161,13 +157,13 @@
     lengthMenu: [[30, 50, 100, 200, 500], [30, 50, 100, 200, 500]],
     ajax: '{!! route('post.getList') !!}',
     columns: [
-    {data: 'DT_RowIndex', orderable: false, searchable: false, 'class':'dt-center', 'width':'50px'},
+    {data: 'DT_RowIndex', orderable: false, searchable: false, 'class':'dt-center', 'width':'30px'},
     {data: 'post', name: 'post', 'width':'150px'},
     {data: 'name', name: 'name'},
-    {data: 'category', name: 'category'},
+    {data: 'category', name: 'category', 'width':'88px'},
     {data: 'content', name: 'content', 'width':'300px', class:'dt-justify'},
     {data: 'created_at', name: 'created_at', 'class':'dt-center'},
-    {data: 'action', name: 'action', orderable: false, searchable: false, "width": "100px", 'class':'dt-center'},
+    {data: 'action', name: 'action', orderable: false, searchable: false, "width": "90px", 'class':'dt-center'},
     ]
   });
 

@@ -14,7 +14,7 @@ class Post extends Model
     protected $table = 'tbl_posts';
 
     protected $fillable = [
-    	'id', 'post', 'content', 'user_id', 'category_id', 'status', 'files', 'created_at', 'updated_at', 'deleted_at',
+    	'id', 'post', 'slug', 'content', 'user_id', 'category_id', 'status', 'files', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     public function user(){
