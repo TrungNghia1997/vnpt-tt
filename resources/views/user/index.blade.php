@@ -97,17 +97,17 @@
       <div class="modal-body">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="name_user">Họ tên</label>
+            <label for="name_user">Họ tên <span class="red-color">(*)</span></label>
             <input type="text" class="form-control" id="name_user" placeholder="" value="">
           </div>
 
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="email">Email</label>
+            <label for="email">Email <span class="red-color">(*)</span></label>
             <input type="email" class="form-control" id="email_user" placeholder="" value="">
           </div>
 
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="phone">Điện thoại</label>
+            <label for="phone">Điện thoại <span class="red-color">(*)</span></label>
             <input type="text" class="form-control phone-inputmask" id="phone" placeholder="" value="">
           </div>
 
@@ -337,7 +337,7 @@
       gender = $('#female').val();
     }
 
-    var image = ($('#avatar')[0].files[0])? $('#avatar')[0].files[0]: '';
+    var image = ($('#avatar')[0].files[0])? $('#avatar')[0].files[0]: $('.image-preview-filename').val();
     var name  = $('#name_user').val();
     var email = $('#email_user').val();
     var phone = $(".phone-inputmask").val().toString().replace(/[()]/g, '').replace(/-/, '').replace(' ', '');

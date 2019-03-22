@@ -91,12 +91,12 @@
       <div class="modal-body">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="post">Tên bài viết</label>
+            <label for="post">Tên bài viết <span class="red-color">(*)</span></label>
             <input type="text" class="form-control" id="post" placeholder="" value="">
           </div>
 
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="post">Chuyên mục</label>
+            <label for="post">Chuyên mục <span class="red-color">(*)</span></label>
             <select id="category_id" class="form-control form-control-sm">
               @foreach ($category as $key => $val_cat)
               <option value="{{$val_cat['id']}}">{{$val_cat['category']}}</option>
@@ -105,12 +105,12 @@
           </div>
 
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="content">Nội dung</label>
+            <label for="content">Nội dung <span class="red-color">(*)</span></label>
             <textarea class="form-control" id="content" rows="3"></textarea>
           </div>
 
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="status">Trạng thái</label>
+            <label for="status">Trạng thái <span class="red-color">(*)</span></label>
             <select id="status" class="form-control form-control-sm">
               <option value="0">Công khai</option>
               <option value="1">Riêng tư</option>
@@ -351,9 +351,9 @@
     plugins: [
     'advlist autolink lists link image charmap print preview anchor textcolor',
     'searchreplace visualblocks code fullscreen',
-    'insertdatetime media table paste code help wordcount'
+    'insertdatetime media table paste code help imagetools wordcount'
     ],
-    toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+    toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | link image',
     content_css: [
     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
     '//www.tiny.cloud/css/codepen.min.css'

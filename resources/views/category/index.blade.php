@@ -61,7 +61,7 @@
       <div class="modal-body">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
-            <label for="category">Chuyên mục</label>
+            <label for="category">Chuyên mục <span class="red-color">(*)</span></label>
             <input type="text" class="form-control" id="category" placeholder="" value="">
           </div>
         </div>
@@ -184,7 +184,7 @@
     var id = $('#idEditCategory').val();
 
     $.ajax({
-      type: 'PUT',
+      type: 'POST',
       url: "{{URL::asset('')}}category/"+id+"",
       data: {
         category: $('#category').val(),

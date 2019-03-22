@@ -165,6 +165,7 @@ class UserController extends Controller
             ], 200);
         }else{
             try {
+                $user = User::where('id', $id)->first();
 
                 if(!empty($data['birthday'])){
                     $data['birthday'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['birthday'])));
@@ -172,19 +173,21 @@ class UserController extends Controller
                     unset($data['birthday']);
                 }
                 
-                if(!empty($data['avatar'])){
-                    $image_name = $request->file('avatar')->getClientOriginalName();
-                    $dir = 'images/';
-                    $filename =  date('d_m_Y'). '_' . $image_name;
+                if($user['avatar'] != $data['avatar']){
+                    if(!empty($data['avatar'])){
+                        $image_name = $request->file('avatar')->getClientOriginalName();
+                        $dir = 'images/';
+                        $filename =  date('d_m_Y'). '_' . $image_name;
 
-                    if(!file_exists(url('images/'.$filename))){
-                        $request->file('avatar')->move($dir, $filename);
+                        if(!file_exists(url('images/'.$filename))){
+                            $request->file('avatar')->move($dir, $filename);
+                        }
+
+                        $data['avatar'] = $filename;
                     }
-
-                    $data['avatar'] = $filename;
                 }
 
-                User::where('id', $id)->update($data);
+                $user->update($data);
 
                 return response()->json([
                     'error' => false,

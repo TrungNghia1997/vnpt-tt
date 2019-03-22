@@ -9,7 +9,7 @@
 <div class="row">
   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
     <div class="page-header">
-      <h3 class="mb-2">Quản lý bộ phận </h3>
+      <h3 class="mb-2">Quản lý nhóm bộ phận </h3>
       <div class="page-breadcrumb">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
@@ -60,7 +60,7 @@
       <div class="modal-body">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="department_group">Tên nhóm</label>
+            <label for="department_group">Tên nhóm <span class="red-color">(*)</span></label>
             <input type="text" class="form-control" id="department_group" placeholder="" value="">
           </div>
         </div>
@@ -83,7 +83,7 @@
     <div class="modal-content">
 
       <div class="modal-header center">
-        <h4 class="modal-title">Chi tiết nhóm bộ phận</h4>
+        <h4 class="modal-title">Quản lý bộ phận</h4>
       </div>
 
       <div class="modal-body">
@@ -131,7 +131,7 @@
       <div class="modal-body">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="department">Bộ phận</label>
+            <label for="department">Bộ phận <span class="red-color">(*)</span></label>
             <input type="text" class="form-control" id="department" placeholder="" value="">
           </div>
         </div>

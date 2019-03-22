@@ -52,7 +52,7 @@
     <div class="panel panel-default">
       <div class="panel-body posts">
         <div id="post-title" style="margin-bottom: 20px;">
-          <h2 style="margin-bottom: 0;">Tìm kiếm: {{$search_name}}</h2>
+          <h2 style="margin-bottom: 0;">Tìm kiếm: {{$search_name}} {{($category_name != '')? ' - chuyên mục: '.$category_name: '' }}</h2>
           <p>Có {{$number}} kết quả được tìm thấy</p>
         </div>
         {{-- Danh sách bài viết --}}
@@ -62,10 +62,13 @@
           <div class="card">
             <div class="card-body">
               <a href="{{ route('post.detail', $post->slug) }}" title="">
-                <h3 style="margin-bottom: 0px;"> {{$post['post']}}</h3>
+                <h3 style="margin-bottom: 0px;">TB số {{$post['id']}}: {{$post['post']}}</h3>
               </a>
               <p style="font-style: italic;"><span>{{date('d/m/Y', strtotime($post['created_at']))}}</span> - <span>{{$post['user_id']}}</span></p>
               <p> {!!$post['content']!!}</p>
+              <a href="{{route('post.detail', $post['slug'])}}">
+                <button type="button" class="btn btn-sm btn-info">Xem thêm</button>
+              </a>
             </div>
           </div>
           @endforeach

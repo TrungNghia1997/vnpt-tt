@@ -202,7 +202,7 @@ class DepartmentController extends Controller
         ->addColumn('action', function($department){
             $string = '';
 
-            $string = $string.'<a type="button" onclick="showDetailDepartmentGroup('.$department->id.')"  class="btn btn-xs btn-info" data-tooltip="tooltip" title="Chi tiết">
+            $string = $string.'<a type="button" onclick="showDetailDepartmentGroup('.$department->id.')"  class="btn btn-xs btn-info" data-tooltip="tooltip" title="Quản lý bộ phận">
             <i class="fas fa-edit"></i> 
             </a>';
             

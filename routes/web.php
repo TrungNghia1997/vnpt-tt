@@ -32,7 +32,7 @@ Route::get('get-list-category', 'Category\CategoryController@getListCategory')->
 Route::post('insert-category', 'Category\CategoryController@store')->name('category.insert');
 Route::delete('category/{id}', 'Category\CategoryController@destroy')->name('category.delete');
 Route::get('category/{id}', 'Category\CategoryController@show')->name('category.show');
-Route::put('category/{id}', 'Category\CategoryController@update')->name('category.update');
+Route::post('category/{id}', 'Category\CategoryController@update')->name('category.update');
 
 //Quản lý bộ phận
 Route::get('department', 'Department\DepartmentController@index')->name('department.index');
@@ -74,3 +74,11 @@ Route::get('download/{file}', 'Post\PostController@fileDownload')->name('file.do
 //Danh bạ nội bộ
 Route::get('contact-user', 'User\UserController@contactUser')->name('contactUser.index');
 Route::get('get-list-contact-user', 'User\UserController@getListContactUser')->name('contactUser.getList');
+
+//Quản lý chương trình liên kết
+Route::get('link', 'Link\LinkController@index')->name('link.index');
+Route::get('get-list-link', 'Link\LinkController@getListPost')->name('link.getList');
+Route::post('insert-link', 'Link\LinkController@store')->name('link.insert');
+Route::delete('link/{id}', 'Link\LinkController@destroy')->name('link.delete');
+Route::get('link/{id}', 'Link\LinkController@show')->name('link.show');
+Route::post('link/{id}', 'Link\LinkController@update')->name('link.update');

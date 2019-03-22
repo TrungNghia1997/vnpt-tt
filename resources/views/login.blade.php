@@ -1,6 +1,15 @@
 @extends('layouts.master')
 
 @section('content')
+
+@if(Session::has('message'))
+<script>
+	document.addEventListener('DOMContentLoaded', function(event) {
+	  toastr.warning('{{ Session::get('message') }}');
+	})
+</script>
+@endif
+
 <div class="row justify-content-center">
 	<div class="col-md-5">
 		<div class="card ">

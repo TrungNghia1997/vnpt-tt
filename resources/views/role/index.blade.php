@@ -63,11 +63,11 @@
       <div class="modal-body">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="name">Vai trò</label>
+            <label for="name">Vai trò <span class="red-color">(*)</span></label>
             <input type="text" class="form-control" id="name" placeholder="" value="">
           </div>
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
-            <label for="display_name">Tên hiển thị</label>
+            <label for="display_name">Tên hiển thị <span class="red-color">(*)</span></label>
             <input type="text" class="form-control" id="display_name" placeholder="" value="">
           </div>
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">

@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Department;
 use Auth;
+use Session;
 
 class PostController extends Controller
 {
@@ -22,7 +24,16 @@ class PostController extends Controller
      */
     public function index()
     {
-        $category = Category::whereNull('deleted_at')->orderBy('id', 'desc')->get();
+        $parent_id = Auth::user()->departments[0]->parent_id;
+        $category=null;
+
+        if($parent_id == 2) {
+          $category = Category::whereNull('deleted_at')->whereIn('id', [1,2,4,5])->get();
+        } elseif($parent_id == 1 || $parent_id == 16) {
+          $category = Category::whereNull('deleted_at')->whereIn('id', [1,3,4])->get();
+        } elseif($parent_id == 17) {
+          $category = Category::whereNull('deleted_at')->whereIn('id', [7])->get();
+        }
 
         return view('post.index', ['category' => $category]);
     }
@@ -224,11 +235,16 @@ class PostController extends Controller
         return '<a href="'.route('post.detail',$post->slug).'">'.$post->post.'</a>';
       })
       ->editColumn('content', function($post){
+        $string = '';
         if(strlen($post->content) >= 180){
-          return substr($post->content, 0, 180).'... <a href="'.route('post.detail',$post->slug).'" style="color:#007bff;">Xem thêm</a>';
+          $string = substr($post->content, 0, 180).'... <a href="'.route('post.detail',$post->slug).'" style="color:#007bff;">Xem thêm</a>';
         }else{
-          return $post->content;
+          $string = $post->content;
         }
+
+        $string = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
+
+        return $string;
       })
       ->editColumn('created_at', function($post){
         return date('H:i | d-m-Y', strtotime($post->created_at));
@@ -236,16 +252,17 @@ class PostController extends Controller
       ->addColumn('action', function($post){
         $string = '';
 
-                // if (Entrust::can(["category-edit"])) {
-        $string = $string.'<a type="button" onclick="showEditPost('.$post->post_id.')"  class="btn btn-xs btn-warning" data-tooltip="tooltip" title="Chỉnh sửa">
-        <i class="fas fa-edit"></i> 
-        </a>';
-                // }
-                // if (Entrust::can(["category-delete"])) {
-        $string = $string.'<a type="button" data-id="'.$post->post_id.'" class="btn btn-xs btn-danger btn-delete" data-tooltip="tooltip" title="Xóa">
-        <i class="fas fa-trash-alt"></i>  
-        </a>';
-                // }
+        if($post->user_id == Auth::id()){
+          $string = $string.'<a type="button" onclick="showEditPost('.$post->post_id.')"  class="btn btn-xs btn-warning" data-tooltip="tooltip" title="Chỉnh sửa">
+          <i class="fas fa-edit"></i> 
+          </a>';
+
+          $string = $string.'<a type="button" data-id="'.$post->post_id.'" class="btn btn-xs btn-danger btn-delete" data-tooltip="tooltip" title="Xóa">
+          <i class="fas fa-trash-alt"></i>  
+          </a>';
+        }else{
+          $string = 'Không có quyền sửa';
+        }
 
         return $string;
       })
@@ -257,6 +274,8 @@ class PostController extends Controller
       $post = Post::where('slug', $slug)->first();
 
       if($post->status == 1 && empty(Auth::user())){
+          Session::flash('message', 'Đây là thông báo riêng, bạn phải đăng nhập để tiếp tục');
+
           return redirect()->route('login');
       }
 
@@ -298,6 +317,7 @@ class PostController extends Controller
             'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
 
         );
+        $str = str_replace(' - ','-',$str);
 
         foreach($unicode as $nonUnicode=>$uni){
 
@@ -305,6 +325,7 @@ class PostController extends Controller
 
         }
         $str = str_replace(' ','-',$str);
+        $str = str_replace('%','',$str);
         $str = strtolower($str);
         $str = $str.'-'.rand(10000,99999);
 

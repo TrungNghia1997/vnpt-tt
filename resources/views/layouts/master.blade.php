@@ -82,7 +82,7 @@
                                 Trang chủ
                             </li></a>
 
-                            @if(Entrust::can(['view_user']) || Entrust::can(['view_post']) || Entrust::can(['view_category']) || Entrust::can(['view_department']) || Entrust::can(['view_role']) || Entrust::can(['view_permission']))
+                            @if(Entrust::can(['view_user']) || Entrust::can(['view_post']) || Entrust::can(['view_category']) || Entrust::can(['view_department']) || Entrust::can(['view_role']) || Entrust::can(['view_permission']) || Entrust::can(['view_link']))
                             <li class="nav-divider">
                                 Quản trị
                             </li>
@@ -108,6 +108,12 @@
                             @if(Entrust::can(['view_department']))
                             <li class="nav-item ">
                                 <a class="nav-link {{ Request::is('department*') ? 'active' : '' }}" href="{{ route('department.index') }}"><i class="fas fa-users"></i>Quản lý bộ phận</a>
+                            </li>
+                            @endif
+
+                            @if(Entrust::can(['view_link']))
+                            <li class="nav-item ">
+                                <a class="nav-link {{ Request::is('link*') ? 'active' : '' }}" href="{{ route('link.index') }}"><i class="fa fa-link"></i>Quản lý chương trình liên kết</a>
                             </li>
                             @endif
 
