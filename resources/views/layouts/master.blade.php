@@ -35,14 +35,19 @@
                         <li class="nav-item dropdown nav-user">
                             @if(!empty(Auth::user()))
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ asset('/images/'.Auth::user()->avatar) }}" alt="" class="user-avatar-md rounded-circle"> {{Auth::user()->name}}
+                                @if (Auth::user()->avatar != '')
+                                    <img src="{{ asset('/images/'.Auth::user()->avatar) }}" alt="" class="user-avatar-md rounded-circle"> 
+                                @else
+                                    <img src="{{ asset('/images/avatar-1.jpg') }}" alt="" class="user-avatar-md rounded-circle"> 
+                                @endif
+                                {{Auth::user()->name}}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
                                     <h5 class="mb-0 text-white nav-user-name">{{Auth::user()->name}}</h5>
                                     <span class="status"></span><span class="ml-2">{{Auth::user()->job}}</span>
                                 </div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Tài khoản</a>
+                                <a class="dropdown-item" data-toggle="modal" href="#modalChangePassword" id="view-change-password"><i class="fas fa-user mr-2"></i>Đổi mật khẩu</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
                                 <i class="fas fa-power-off mr-2"></i>Đăng xuất</a>
@@ -155,6 +160,45 @@
         </div>
     </div>
 
+    <div class="modal" id="modalChangePassword">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header center">
+                    <h4 class="modal-title">Đổi mật khẩu</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
+                            <label for="password_old">Mật khẩu cũ <span class="red-color">(*)</span></label>
+                            <input type="password" class="form-control" id="password_old" value="">
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
+                            <label for="password_new">Mật khẩu mới <span class="red-color">(*)</span></label>
+                            <input type="password" class="form-control" id="password_new" value="">
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
+                            <label for="password_confirm">Nhập lại mật khẩu mới <span class="red-color">(*)</span></label>
+                            <input type="password" class="form-control" id="password_confirm" value="">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <center>
+                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-sm btn-primary edit_tag" id="change-password">Cập nhật</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Optional JavaScript -->
     <!-- jquery 3.3.1 -->
     <script src="{{ asset('/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
@@ -180,6 +224,47 @@
             $("body").tooltip({ selector: '[data-tooltip=tooltip]' });
         });
 
+    </script>
+
+    <script>
+        $('#view-change-password').click(function(){
+            $('#password_old').val('');
+            $('#password_new').val('');
+            $('#password_new').val('');
+        });
+
+        $('#change-password').click(function(){
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('user.changePassword') }}',
+                data: {
+                    password_old: $('#password_old').val(),
+                    password_new: $('#password_new').val(),
+                    password_confirm: $('#password_confirm').val(),
+                }, success: function(res){
+                    if (!res.error) {
+                        toastr.success('Bạn đã cập nhật mật khẩu thành công');
+                        $('#modalChangePassword').modal('hide');
+                    } else {
+                        if (res.message.password_old || res.message.password_new || res.message.password_confirm) {
+                            if (res.message.password_old) {
+                                toastr.error(res.message.password_old);
+                            }
+
+                            if (res.message.password_new) {
+                                toastr.error(res.message.password_new);
+                            }
+
+                            if (res.message.password_confirm) {
+                                toastr.error(res.message.password_confirm);
+                            }
+                        } else {
+                            toastr.error(res.message);
+                        }
+                    }
+                }
+            });
+        });
     </script>
 
     @yield('footer')

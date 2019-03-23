@@ -11,6 +11,7 @@ use App\Models\RoleUser;
 use Validator;
 use Entrust;
 use Hash;
+use Auth;
 
 class UserController extends Controller
 {
@@ -391,5 +392,65 @@ class UserController extends Controller
         })
         ->rawColumns(['gender', 'email', 'phone'])
         ->toJson();
+    }
+
+    public function changePassword(Request $request){
+        $data = $request->all();
+
+        $rules = [
+            'password_old' => 'required|min:6',
+            'password_new' => 'required|min:6',
+            'password_confirm' => 'required',
+        ];
+        $messages = [
+            'password_old.required' => 'Vui lòng nhập mật khẩu cũ',
+            'password_old.min' => 'Vui lòng nhập mật khẩu cũ nhiều hơn 6 ký tự',
+            'password_new.required' => 'Vui lòng nhập mật khẩu mới',
+            'password_new.min' => 'Vui lòng nhập mật khẩu khẩu mới nhiều hơn 6 ký tự',
+            'password_confirm.required' => 'Vui lòng nhập lại mật khẩu mới',
+        ];
+
+        $validator = \Validator::make($data, $rules, $messages);
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => true,
+                'message' => $validator->errors()
+            ], 200);
+        } else {
+            try {
+                $user = User::where('id', Auth::id())->first();
+
+                if (!password_verify($data['password_old'], $user['password'])) {
+
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'Mật khẩu cũ không đúng, vui lòng thử lại',
+                    ]);
+                }
+
+                if ($data['password_new'] != $data['password_confirm']) {
+
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'Mật khẩu nhập lại không khớp, vui lòng thử lại',
+                    ]);
+                } else {
+
+                    $user->update([
+                        'password' => Hash::make($data['password_new']),
+                    ]);
+
+                    return response()->json([
+                        'error' => false,
+                    ]);
+                }
+                
+            } catch (Exception $e) {
+                return response()->json([
+                    'error' => true,
+                    'message' => $e->getMessage(),
+                ]); 
+            }
+        }
     }
 }

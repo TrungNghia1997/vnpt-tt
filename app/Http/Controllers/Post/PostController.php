@@ -29,10 +29,10 @@ class PostController extends Controller
 
         if($parent_id == 2) {
           $category = Category::whereNull('deleted_at')->whereIn('id', [1,2,4,5])->get();
-        } elseif($parent_id == 1 || $parent_id == 16) {
+        } elseif($parent_id == 1 || $parent_id == 3) {
           $category = Category::whereNull('deleted_at')->whereIn('id', [1,3,4])->get();
-        } elseif($parent_id == 17) {
-          $category = Category::whereNull('deleted_at')->whereIn('id', [7])->get();
+        } elseif($parent_id == 4) {
+          $category = Category::whereNull('deleted_at')->whereIn('id', [6])->get();
         }
 
         return view('post.index', ['category' => $category]);

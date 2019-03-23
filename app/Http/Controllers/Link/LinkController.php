@@ -185,6 +185,8 @@ class LinkController extends Controller
       ->editColumn('links', function($link){
         if ($link->links != '') {
             return '<a href="'.$link->links.'">'.$link->links.'</a>';
+        } else {
+            return 'Chưa cập nhật';
         }
       })
       ->addColumn('action', function($link){

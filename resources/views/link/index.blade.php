@@ -107,7 +107,7 @@
 
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 margin_bottom">
             <label for="links">Link chương trình <span class="red-color">(*)</span></label>
-            <input type="text" class="form-control" id="links" placeholder="" value="">
+            <input type="text" class="form-control" id="links" placeholder="http://" value="">
           </div>
 
         </div>
@@ -152,7 +152,7 @@
     $('.edit_tag').hide();   
 
     $('#name_link').val('');
-    $('#links').val('');
+    $('#links').val('http://');
     resetImage();
   });
 

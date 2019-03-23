@@ -25,6 +25,7 @@ Route::get('user/{id}', 'User\UserController@show')->name('user.show');
 Route::post('user/{id}', 'User\UserController@update')->name('user.update');
 Route::get('get-role-user', 'User\UserController@getListRoleUser')->name('user.roleUser');
 Route::post('add-del-role-user', 'User\UserController@addDelRole')->name('user.addDelRole');
+Route::post('change-password', 'User\UserController@changePassword')->name('user.changePassword');
 
 //Quản lý chuyên mục
 Route::get('category', 'Category\CategoryController@index')->name('category.index');
